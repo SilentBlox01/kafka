@@ -75,16 +75,16 @@ module.exports = {
 			} else if (client.slashCommands.get(command)) {
 
 				let cmd = client.slashCommands.get(command)
-					let usage = [];
+				let usage = [];
 
-					for(let op of cmd.options) {
-						usage.push(`${command} ${op.required ? `<${op.name}>` : `(${op.name})`}`)
-					}
+				for (let op of (cmd.options || [])) {
+					usage.push(`${command} ${op.required ? `<${op.name}>` : `(${op.name})`}`)
+				}
 
 				const embed = new Discord.EmbedBuilder()
 				.setColor(client.config.EMBEDCOLOR)
 				.setAuthor({ "name": `• ${client.user.username} - ${command}`, "iconURL": client.user.displayAvatarURL({ dynamic: true, format: "png", size: 1024 }) })
-				.setDescription(client.lang.help.command_description.replace("{description}", cmd.description).replace("{usage}", usage))
+				.setDescription(client.lang.help.command_description.replace("{description}", cmd.description).replace("{usage}", usage.length ? usage.join("\n") : command))
 				.setFooter({ "text": interaction.member.user.tag, "iconURL": interaction.member.user.displayAvatarURL({ dynamic: true, size : 1024, format: "png" })})
 				.setTimestamp()
 
