@@ -75,11 +75,11 @@ module.exports = {
 			} else if (client.slashCommands.get(command)) {
 
 				let cmd = client.slashCommands.get(command)
-				let usage = [];
+					let usage = [];
 
-				for(let op of cmd.options) {
-					usage.push(command + " " + op.required ? "<"+op.name+">" : "("+op.name+")")
-				}
+					for(let op of cmd.options) {
+						usage.push(`${command} ${op.required ? `<${op.name}>` : `(${op.name})`}`)
+					}
 
 				const embed = new Discord.EmbedBuilder()
 				.setColor(client.config.EMBEDCOLOR)
