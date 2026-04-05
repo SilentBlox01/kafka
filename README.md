@@ -16,10 +16,20 @@ Kuma was a Discord bot made with discord.js v14, designed to be a multipurpose b
   npm install
   node index.js
 ```
+
+## Temporary deploy on Replit
+
+1. Import this repository into Replit.
+2. Add these Secrets in Replit:
+   - `TOKEN`
+   - `PREFIX`
+   - `EMBEDCOLOR`
+   - `MONGOURL`
+3. Start the app with the configured run command (`npm install && npm run start`).
+4. Keep this as a temporary host, then migrate the same environment variables to Oracle.
     
 ## FAQ
 
 #### Can I use your code?
 
 As long as you give credits it's fine.
-
