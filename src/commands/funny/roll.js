@@ -11,7 +11,7 @@ module.exports = {
     dm: false,
     run: async (client, interaction) => {
         
-        let dice = Math.floor(Math.random() * 5) + 1
+        let dice = Math.floor(Math.random() * 6) + 1
 
         interaction.reply(`🎲 **${dice}**`)
 
