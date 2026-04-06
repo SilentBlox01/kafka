@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const database = require("../../handlers/database");
+const mongoose = require("mongoose");
 const guildSchema = require("../../schemas/guild");
 
 module.exports = {
@@ -32,21 +32,30 @@ module.exports = {
         .setAuthor({ "name": `• ${client.user.username} - Language`, "iconURL": client.user.displayAvatarURL({ dynamic: true, format: "png", size: 1024 }) })
         .setTimestamp()
 
-        let guild = await guildSchema.findOne({ id: interaction.guild.id });
-        
-        if(!guild) {
-            let newGuild = new guildSchema({ id: interaction.guild.id, lang: lang })
-            newGuild.save()
-        } else {
-            await guildSchema.findOneAndUpdate({ id: interaction.guild.id}, {$set: {lang: lang}})
-        }
-        
-            client.lang = require(`../../langs/${lang}.json`);
+        if (mongoose.connection.readyState === 1) {
+            let guild = await guildSchema.findOne({ id: interaction.guild.id });
             
-            embed.setDescription(client.lang.lang.changedLang)
-            .setFooter({ "text": interaction.member.user.tag, "iconURL": interaction.member.user.displayAvatarURL({ dynamic: true, size : 1024, format: "png" })})
+            if(!guild) {
+                let newGuild = new guildSchema({ id: interaction.guild.id, lang: lang })
+                newGuild.save()
+            } else {
+                await guildSchema.findOneAndUpdate({ id: interaction.guild.id}, {$set: {lang: lang}})
+            }
+        }
 
-            interaction.reply({ embeds: [embed] })
+        client.lang = require(`../../langs/${lang}.json`);
+        
+        embed.setDescription(client.lang.lang.changedLang)
+        .setFooter({ "text": interaction.member.user.tag, "iconURL": interaction.member.user.displayAvatarURL({ dynamic: true, size : 1024, format: "png" })})
+
+        if (mongoose.connection.readyState !== 1) {
+            embed.addFields({
+                name: "Warning",
+                value: "MongoDB is not connected. This language change is temporary."
+            })
+        }
+
+        interaction.reply({ embeds: [embed] })
 
     }
 }
