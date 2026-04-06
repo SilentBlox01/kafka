@@ -2,9 +2,9 @@ const database = require("../handlers/database");
 
 module.exports = async (client, interaction) => {
 
-    if (!interaction.isCommand() && !interaction.isButton() && !interaction.isSelectMenu()) return;
+    if (!interaction.isChatInputCommand() && !interaction.isButton() && !interaction.isStringSelectMenu()) return;
 
-    let schemaGuild = await database.fetchGuild(interaction.guild.id)
+    let schemaGuild = interaction.guild ? await database.fetchGuild(interaction.guild.id) : null
 
     if(schemaGuild) interaction.lang = schemaGuild.lang
     else interaction.lang = "en";

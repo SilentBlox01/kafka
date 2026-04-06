@@ -10,7 +10,7 @@ module.exports = {
         { type: "user", 
         name: "user", 
         description: "User to display.", 
-        required: true }
+        required: false }
     ],
     run: async (client, interaction) => {
 
